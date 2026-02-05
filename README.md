@@ -88,7 +88,14 @@ newgrp docker
 
 ### 8. Install Docker Compose
 
-Download and install Docker Compose:
+**Recommended: Install as Docker plugin (V2)**
+
+```bash
+sudo apt update
+sudo apt install -y docker-compose-plugin
+```
+
+**Alternative: Install standalone (Legacy)**
 
 ```bash
 sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -97,9 +104,17 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 ### 9. Verify Docker Compose Installation
 
+For plugin installation (recommended):
+```bash
+docker compose version
+```
+
+For standalone installation:
 ```bash
 docker-compose --version
 ```
+
+**Note:** Modern Docker installations use `docker compose` (with a space) while legacy installations use `docker-compose` (with a hyphen).
 
 ### 10. Set Up Torrent Service
 
@@ -119,6 +134,10 @@ Copy or create the `docker-compose.yml` file in your torrent-services directory 
 Launch your torrent services using Docker Compose:
 
 ```bash
+# Using Docker Compose V2 (plugin)
+docker compose up -d
+
+# Or using legacy docker-compose
 docker-compose up -d
 ```
 
@@ -127,6 +146,11 @@ docker-compose up -d
 Verify that your containers are running:
 
 ```bash
+# Using Docker Compose V2 (plugin)
+docker compose ps
+docker ps
+
+# Or using legacy docker-compose
 docker-compose ps
 docker ps
 ```
@@ -139,6 +163,23 @@ Access your torrent client's web interface (typically at `http://localhost:8080`
 
 Useful commands for managing your services:
 
+**Using Docker Compose V2 (plugin):**
+```bash
+# Stop services
+docker compose down
+
+# View logs
+docker compose logs -f
+
+# Restart services
+docker compose restart
+
+# Update containers
+docker compose pull
+docker compose up -d
+```
+
+**Using legacy docker-compose:**
 ```bash
 # Stop services
 docker-compose down
@@ -157,8 +198,9 @@ docker-compose up -d
 ## Troubleshooting
 
 - If you encounter permission errors, ensure you've added your user to the docker group and logged out/in again
-- Check logs with `docker-compose logs` for service-specific issues
+- Check logs with `docker compose logs` or `docker-compose logs` for service-specific issues
 - Ensure required ports are not already in use
+- If using the modern Docker Compose plugin, use `docker compose` (with space). For legacy installations, use `docker-compose` (with hyphen)
 
 ## Additional Resources
 
