@@ -1,5 +1,13 @@
 # docker-compose.yml for torrent services
 # Configure your torrent services here
+# Example service configuration:
+#   your-service-name:
+#     image: your-torrent-client:latest
+#     ports:
+#       - "8080:8080"  # Map host port to container port
+#     volumes:
+#       - ./config:/config
+#       - ./downloads:/downloads
 
 services:
   # Add your torrent service configuration here

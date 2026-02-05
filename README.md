@@ -157,7 +157,7 @@ docker ps
 
 ### 14. Access Torrent Web UI
 
-Access your torrent client's web interface (typically at `http://localhost:8080` or the configured port).
+Access your torrent client's web interface (the specific port depends on your service configuration, typically configured as port mapping in docker-compose.yml, e.g., `http://localhost:8080`).
 
 ### 15. Manage Services
 
