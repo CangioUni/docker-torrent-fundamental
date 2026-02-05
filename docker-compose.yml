@@ -1,0 +1,7 @@
+# docker-compose.yml for torrent services
+# Configure your torrent services here
+
+version: '3.8'
+
+services:
+  # Add your torrent service configuration here
