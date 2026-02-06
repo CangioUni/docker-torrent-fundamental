@@ -1,12 +1,6 @@
-# docker-torrent-fundamental
+# Docker Torrent Fundamental
 
 A comprehensive guide for installing Docker on Ubuntu/Debian systems and setting up torrent services.
-
-## Prerequisites
-
-- Ubuntu/Debian-based system
-- sudo privileges
-- Internet connection
 
 ## Installation Steps
 
@@ -15,8 +9,7 @@ A comprehensive guide for installing Docker on Ubuntu/Debian systems and setting
 Update your package index and upgrade existing packages:
 
 ```bash
-sudo apt update
-sudo apt upgrade -y
+sudo apt update && sudo apt upgrade -yy && sudo apt install git curl vim -yy
 ```
 
 ### 2. Install Required Dependencies
@@ -24,51 +17,13 @@ sudo apt upgrade -y
 Install necessary dependencies for Docker:
 
 ```bash
-sudo apt install -y \
-    apt-transport-https \
-    ca-certificates \
-    curl \
-    gnupg \
-    lsb-release
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/Cangio/linux-utils/main/docker-install.sh)"
 ```
 
-### 3. Add Docker's Official GPG Key
+The script installs docker, docker-compose, create a "docker" folder in main user directory and add user to docker group.
+Should be working, comes from a merge of script with debian and ubuntu with AI.
 
-```bash
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-```
-
-For Debian:
-```bash
-curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-```
-
-### 4. Set Up the Stable Repository
-
-For Ubuntu:
-```bash
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
-  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-```
-
-For Debian:
-```bash
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian \
-  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-```
-
-### 5. Install Docker Engine
-
-Update the package index and install Docker:
-
-```bash
-sudo apt update
-sudo apt install -y docker-ce docker-ce-cli containerd.io
-```
-
-### 6. Verify Docker Installation
+### 3. Verify Docker Installation
 
 Check that Docker is installed correctly:
 
@@ -77,89 +32,41 @@ sudo docker --version
 sudo docker run hello-world
 ```
 
-### 7. Add Your User to the Docker Group (Optional)
-
-To run Docker commands without sudo:
-
-```bash
-sudo usermod -aG docker $USER
-newgrp docker
-```
-
-### 8. Install Docker Compose
-
-**Recommended: Install as Docker plugin (V2)**
-
-```bash
-sudo apt update
-sudo apt install -y docker-compose-plugin
-```
-
-**Alternative: Install standalone (Legacy)**
-
-```bash
-sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
-```
-
-### 9. Verify Docker Compose Installation
-
-For plugin installation (recommended):
-```bash
-docker compose version
-```
-
-For standalone installation:
-```bash
-docker-compose --version
-```
-
-**Note:** Modern Docker installations use `docker compose` (with a space) while legacy installations use `docker-compose` (with a hyphen).
-
-### 10. Set Up Torrent Service
+### 4. Set Up Torrent Service
 
 Create a directory for your torrent configuration:
 
 ```bash
-mkdir -p ~/torrent-services
-cd ~/torrent-services
+mkdir -p ~/dockers/torrent
+cd ~/dockers/torrent
 ```
 
-### 11. Configure docker-compose.yml
+### 5. Configure docker-compose.yml
 
 Copy or create the `docker-compose.yml` file in your torrent-services directory and customize it according to your needs.
 
-### 12. Start Torrent Services
+### 6. Start Torrent Services
 
 Launch your torrent services using Docker Compose:
 
 ```bash
-# Using Docker Compose V2 (plugin)
 docker compose up -d
-
-# Or using legacy docker-compose
-docker-compose up -d
 ```
+(-d is `detached`, running even when closing ssh connection)
 
-### 13. Check Running Containers
+### 7. Check Running Containers
 
 Verify that your containers are running:
 
 ```bash
-# Using Docker Compose V2 (plugin)
-docker compose ps
-docker ps
-
-# Or using legacy docker-compose
-docker-compose ps
-docker ps
+docker ps -a
 ```
 
-### 14. Access Torrent Web UI
+### 8. Access Torrent Web UI
 
 Access your torrent client's web interface (the specific port depends on your service configuration, typically configured as port mapping in docker-compose.yml, e.g., `http://localhost:8080`).
 
-### 15. Manage Services
+### 9. Manage Services
 
 Useful commands for managing your services:
 
@@ -173,34 +80,7 @@ docker compose logs -f
 
 # Restart services
 docker compose restart
-
-# Update containers
-docker compose pull
-docker compose up -d
 ```
-
-**Using legacy docker-compose:**
-```bash
-# Stop services
-docker-compose down
-
-# View logs
-docker-compose logs -f
-
-# Restart services
-docker-compose restart
-
-# Update containers
-docker-compose pull
-docker-compose up -d
-```
-
-## Troubleshooting
-
-- If you encounter permission errors, ensure you've added your user to the docker group and logged out/in again
-- Check logs with `docker compose logs` or `docker-compose logs` for service-specific issues
-- Ensure required ports are not already in use
-- If using the modern Docker Compose plugin, use `docker compose` (with space). For legacy installations, use `docker-compose` (with hyphen)
 
 ## Additional Resources
 
